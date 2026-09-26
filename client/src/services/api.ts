@@ -1,8 +1,15 @@
 import axios from 'axios';
 import { Stock, MarketData, PortfolioHolding, AccountSummary, Transaction, TradeRequest, HealthStatus, PortfolioTrajectoryPoint } from '../types';
 
+const getBaseUrl = (): string => {
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (!envUrl) return '/api';
+  const cleanUrl = envUrl.replace(/\/+$/, '');
+  return cleanUrl.endsWith('/api') ? cleanUrl : `${cleanUrl}/api`;
+};
+
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: getBaseUrl(),
   headers: {
     'Content-Type': 'application/json',
   },
