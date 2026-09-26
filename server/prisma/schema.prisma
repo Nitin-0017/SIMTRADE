@@ -1,0 +1,81 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum TransactionType {
+  BUY
+  SELL
+}
+
+model Stock {
+  id          Int          @id @default(autoincrement())
+  symbol      String       @unique
+  companyName String
+
+  marketData   MarketData[]
+  portfolio    Portfolio?
+  transactions Transaction[]
+
+  createdAt   DateTime     @default(now())
+}
+
+model MarketData {
+  id          BigInt   @id @default(autoincrement())
+  stockId     Int
+  timestamp   DateTime
+
+  open        Decimal  @db.Decimal(18, 2)
+  high        Decimal  @db.Decimal(18, 2)
+  low         Decimal  @db.Decimal(18, 2)
+  close       Decimal  @db.Decimal(18, 2)
+  volume      BigInt
+
+  stock       Stock    @relation(fields: [stockId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime @default(now())
+
+  @@unique([stockId, timestamp])
+  @@index([stockId, timestamp])
+}
+
+model Portfolio {
+  id              Int      @id @default(autoincrement())
+  stockId         Int      @unique
+  quantity        Int
+  averageBuyPrice Decimal  @db.Decimal(18, 2)
+
+  stock           Stock    @relation(fields: [stockId], references: [id], onDelete: Cascade)
+
+  updatedAt       DateTime @updatedAt
+}
+
+model Transaction {
+  id           BigInt          @id @default(autoincrement())
+  stockId      Int
+  type         TransactionType
+  quantity     Int
+  price              Decimal         @db.Decimal(18, 2)
+  totalAmount        Decimal         @db.Decimal(18, 2)
+  realizedProfitLoss Decimal?        @db.Decimal(18, 2) @default(0)
+  timestamp          DateTime
+
+  stock              Stock           @relation(fields: [stockId], references: [id], onDelete: Cascade)
+
+  createdAt          DateTime        @default(now())
+
+  @@index([stockId])
+  @@index([timestamp])
+}
+
+model Account {
+  id             Int      @id @default(autoincrement())
+  cashBalance    Decimal  @db.Decimal(18, 2)
+  initialBalance Decimal  @db.Decimal(18, 2)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}

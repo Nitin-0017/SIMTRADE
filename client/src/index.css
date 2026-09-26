@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #080D18;
+  --background-secondary: #0B1220;
+  --surface: #101827;
+  --surface-elevated: #141E30;
+  --surface-hover: #19243A;
+
+  --primary: #4F7CFF;
+  --primary-light: #6E96FF;
+  --primary-soft: rgba(79, 124, 255, 0.14);
+
+  --violet: #8B7CFF;
+  --violet-soft: rgba(139, 124, 255, 0.12);
+
+  --positive: #35D49A;
+  --negative: #FF5D73;
+  --warning: #F4B860;
+
+  --text-primary: #F5F7FA;
+  --text-secondary: #AAB4C5;
+  --text-muted: #697589;
+
+  --border: rgba(255, 255, 255, 0.07);
+}
+
+@layer base {
+  body {
+    background-color: var(--background);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Monospace figures ONLY for numerical market data */
+  .font-mono, .tnum {
+    font-family: 'JetBrains Mono', monospace;
+    font-feature-settings: 'tnum' on, 'zero' on;
+  }
+}
+
+/* Midnight Market Ambient Background */
+.ambient-bg {
+  background:
+    radial-gradient(circle at 75% 10%, rgba(79, 124, 255, 0.10), transparent 35%),
+    radial-gradient(circle at 20% 80%, rgba(139, 124, 255, 0.06), transparent 30%),
+    #080D18;
+}
+
+/* Subtle Chart Micro-Grid */
+.chart-grid-bg {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* Pulse animation for Market Pulse indicator */
+@keyframes breathingPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.4);
+    opacity: 0.2;
+  }
+}
+
+.pulse-dot {
+  animation: breathingPulse 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Clean scrollbars */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
