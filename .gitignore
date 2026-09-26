@@ -8,9 +8,12 @@ dist-ssr/
 */dist/
 
 # Environment files
-.env
-.env*.local
 server/.env
+.env*.local
+*.local
+!client/.env
+!client/.env.production
+!client/.env.example
 !server/.env.example
 
 # Logs
